@@ -2,6 +2,9 @@
 <!-- JS -->
 <script>
 
+    import { createEventDispatcher } from 'svelte';
+    const dispatch = createEventDispatcher();
+
     import Navbar from './Navbar.svelte'
 
     export let name;
@@ -12,6 +15,10 @@
     const addToken = ()=> amount+=1;
     const removeToken = ()=> amount-=1;
     const toggleControls = ()=> showControls =! showControls;
+
+    const deleteCrypto = () => {
+        dispatch("removecrypto", name)
+    }
 
 </script>
 
@@ -84,8 +91,9 @@
 
 <div class="card">
     <h2>{ name } | <span class="symbol">{ symbol }</span>
-    <button on:click = {toggleControls} class="btn-small">{#if showControls} - { :else } + { /if }</button></h2>
-
+        <button on:click = {toggleControls} class="btn-small">{#if showControls} - { :else } + { /if }</button>
+        <button class="btn-small" on:click = { deleteCrypto }> - </button>
+    </h2>
     {#if showControls}
         <button class="btn-light" on:click={addToken}> + </button>
         <button class="btn-dark" on:click={removeToken}> - </button>

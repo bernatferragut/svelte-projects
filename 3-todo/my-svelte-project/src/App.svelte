@@ -3,7 +3,8 @@
 <script>
 
     import Navbar from './Navbar.svelte';
-    import Crypto from './Crypto.svelte'
+    import Crypto from './Crypto.svelte';
+    import AddCrypto from './AddCrypto.svelte'
 
     let cryptos = [
         {
@@ -23,6 +24,16 @@
         },
     ]
 
+    const addCrypto = (e) => {
+        console.log(e.detail);
+        const newCrypto = e.detail;
+        cryptos = [...cryptos, newCrypto];
+    }
+
+    const deleteCrypto = (e) => {
+        console.log('removed');
+        cryptos = cryptos.filter(crypto => crypto.name !== e.detail);
+    }
 
 </script>
 
@@ -40,10 +51,16 @@
 <!-- HTML -->
 <Navbar/>
 <div class="container">
+    <AddCrypto on:addcrypto = { addCrypto }/>
+
     {#if cryptos.length === 0} <p>Please add Crytpos</p>
     {:else}
         {#each cryptos as crypto}
-        <Crypto name = {crypto.name} symbol = {crypto.symbol} amount = {crypto.amount} />
+        <Crypto name = {crypto.name} 
+                symbol = {crypto.symbol} 
+                amount = {crypto.amount} 
+                on:removecrypto = { deleteCrypto }
+                />
         {/each}
     {/if}
 </div>
